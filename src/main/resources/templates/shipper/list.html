@@ -9,7 +9,10 @@
     <body>
         <main>
             <div class="container px-4 py-5">
-                <h1 class="pb-2 border-bottom">Lista de transportistas</h1>
+                <div th:insert="~{fragmentos/navbar.html :: cabecera}"></div>
+                <div th:replace="~{fragmentos/navbar.html :: cabecera2}"></div>
+                <!--h1 class="pb-2 border-bottom">Lista de transportistas</h1-->
+                <h1 th:replace="~{fragmentos/titulos :: titulo1('transportistas')}"></h1>
                 <div class="d-flex mt-3 mb-4">
                     <a class="btn btn-primary" th:href="@{'/shipper/new'}">Nuevo Transportista</a>
                     <a class="btn btn-secondary ms-auto" th:href="@{'/'}">Regresar</a>
@@ -17,6 +20,9 @@
                 <form method="post" th:action="@{/shipper/BuscarTransportistas}">
                     <input name="searchField" class="form-control mb-3" type="text" placeholder="Search"/>
                 </form>
+                <div class="alert alert-success" role="alert" th:if="${msg != null}" th:text="${msg}">
+                    A simple success alert—check it out!
+                </div>
                 <table class="table">
                     <tr>
                         <th>#</th>
@@ -27,12 +33,38 @@
                     </tr>
                     <tr th:each="shipper, info : ${shipperList}">
                         <td th:text="${info.index + 1}"></td>
-                        <td th:text="${shipper.companyName}"></td>
+                        <td th:text="${shipper.companyname}"></td>
                         <td th:text="${shipper.phone}"></td>
                         <td><a class="btn btn-primary" th:href="@{'/shipper/edit' + '?id=' + ${shipper.shipperId}}">Editar</a>
                         </td>
                         <td><a class="btn btn-danger" th:href="@{'/shipper/delete' + '?id=' + ${shipper.shipperId}}">Borrar</a>
                         </td>
+                    </tr>
+                </table>
+                <hr />
+                <table class="table table-striped">
+                    <tr>
+                        <th>#</th>
+                        <th>Región</th>
+                        <th>Cantidad de empleados</th>
+                    </tr>
+                    <tr th:each="e, info : ${empleadoPorRegion}">
+                        <td th:text="${info.index + 1}"></td>
+                        <td th:text="${e.getRegiondescription()}"></td>
+                        <td th:text="${e.getCantidadempleados()}"></td>
+                    </tr>
+                </table>
+                <hr />
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th>#</th>
+                        <th>Pais</th>
+                        <th>Cantidad de empleados</th>
+                    </tr>
+                    <tr th:each="e, info : ${empleadosPorPais}">
+                        <td th:text="${info.index + 1}"></td>
+                        <td th:text="${e.country}"></td>
+                        <td th:text="${e.cantidadempleados}"></td>
                     </tr>
                 </table>
             </div>
